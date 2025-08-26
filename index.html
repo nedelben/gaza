@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="theme-color" content="#6a5acd" />
   <title>Yoobify - محرك بحث</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@700&display=swap" rel="stylesheet"/>
   <style>
@@ -33,9 +34,6 @@
       margin-bottom: 30px;
       text-align: center;
       z-index: 2;
-      background-color: rgba(0, 0, 0, 0.2);
-      padding: 10px 20px;
-      border-radius: 10px;
     }
 
     .search-bar {
@@ -81,7 +79,7 @@
     .icon-btn {
       background: none;
       border: none;
-      cursor: pointer;
+      cursor: default;
       padding: 5px;
       display: flex;
       align-items: center;
@@ -94,11 +92,6 @@
       stroke: #333;
       stroke-width: 2;
       fill: none;
-      transition: stroke 0.3s;
-    }
-
-    .icon-btn:hover svg {
-      stroke: #000;
     }
 
     #clearBtn {
@@ -166,7 +159,7 @@
 
     @keyframes fall {
       0% { transform: translateY(0) rotate(0deg); opacity: 1; }
-      100% { transform: translateY(100vh) rotate(180deg); opacity: 0.6; }
+      100% { transform: translateY(100vh) rotate(180deg); opacity: 0.5; }
     }
 
     @media (max-width: 600px) {
@@ -203,7 +196,7 @@
 
   <div class="search-bar">
     <input id="searchInput" type="text" placeholder="ابحث في Yoobify...">
-    <button id="clearBtn" class="icon-btn" onclick="clearInput()" aria-label="حذف">
+    <button id="clearBtn" class="icon-btn" aria-label="حذف">
       <svg viewBox="0 0 24 24">
         <line x1="18" y1="6" x2="6" y2="18" />
         <line x1="6" y1="6" x2="18" y2="18" />
@@ -211,20 +204,20 @@
     </button>
     <div class="vertical-line"></div>
     <div class="icon-buttons">
-      <button class="icon-btn" onclick="performSearch()" aria-label="بحث">
+      <button class="icon-btn" aria-label="بحث">
         <svg viewBox="0 0 24 24">
           <circle cx="11" cy="11" r="7"/>
           <line x1="16.65" y1="16.65" x2="21" y2="21"/>
         </svg>
       </button>
-      <button class="icon-btn" onclick="goToMap()" aria-label="خريطة">
+      <button class="icon-btn" aria-label="خريطة">
         <svg viewBox="0 0 24 24">
           <polygon points="2 6 9 3 15 6 22 3 22 18 15 21 9 18 2 21 2 6"/>
           <line x1="9" y1="3" x2="9" y2="18"/>
           <line x1="15" y1="6" x2="15" y2="21"/>
         </svg>
       </button>
-      <button class="icon-btn" onclick="sendAction()" aria-label="إرسال">
+      <button class="icon-btn" aria-label="إرسال">
         <svg viewBox="0 0 24 24">
           <line x1="5" y1="12" x2="19" y2="12"/>
           <polyline points="12 5 19 12 12 19"/>
@@ -245,47 +238,19 @@
     const input = document.getElementById('searchInput');
     const clearBtn = document.getElementById('clearBtn');
 
-    function performSearch() {
-      const query = encodeURIComponent(input.value.trim());
-      if (query) {
-        window.location.href = `https://www.google.com/search?q=${query}`;
-      }
-    }
-
-    function goToMap() {
-      window.location.href = 'https://www.google.com/maps';
-    }
-
-    function sendAction() {
-      alert("🚀 تم إرسال الاستعلام أو تنفيذ الإجراء.");
-    }
-
-    function clearInput() {
-      input.value = '';
-      clearBtn.style.display = 'none';
-      input.focus();
-    }
-
     input.addEventListener('input', () => {
       clearBtn.style.display = input.value ? 'inline-flex' : 'none';
     });
 
     input.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') performSearch();
+      if (e.key === 'Enter') e.preventDefault();
     });
 
-    function createSnowflake() {
-      const snowflake = document.createElement("div");
-      snowflake.classList.add("snowflake");
-      snowflake.textContent = "❄";
-      snowflake.style.left = Math.random() * window.innerWidth + "px";
-      snowflake.style.fontSize = (Math.random() * 20 + 10) + "px";
-      const duration = (Math.random() * 5 + 7) + "s";
-      snowflake.style.animationDuration = duration;
-      document.body.appendChild(snowflake);
-      setTimeout(() => snowflake.remove(), parseFloat(duration) * 1000);
-    }
-    setInterval(createSnowflake, 500); // أقل تكراراً
+    clearBtn.addEventListener('click', () => {
+      input.value = '';
+      clearBtn.style.display = 'none';
+      input.focus();
+    });
 
     function createStar() {
       const star = document.createElement("div");
@@ -297,9 +262,21 @@
       star.style.height = size;
       document.body.appendChild(star);
     }
-    for (let i = 0; i < 100; i++) {
-      createStar();
+    for (let i = 0; i < 100; i++) createStar();
+
+    function createSnowflake() {
+      const snowflake = document.createElement("div");
+      snowflake.classList.add("snowflake");
+      snowflake.textContent = "❄";
+      snowflake.style.left = Math.random() * window.innerWidth + "px";
+      snowflake.style.fontSize = (Math.random() * 15 + 10) + "px";
+      const duration = (Math.random() * 6 + 6) + "s";
+      snowflake.style.animationDuration = duration;
+      document.body.appendChild(snowflake);
+      setTimeout(() => snowflake.remove(), parseFloat(duration) * 1000);
     }
+    setInterval(createSnowflake, 1000);
   </script>
 </body>
 </html>
+
